@@ -23,7 +23,7 @@ int VELOCIDAD_RECONOCER = 130;
 #define CNYDER 1
 #define CNYIZQ 1
 int VELOCIDAD_ATAQUE = 200;
-
+int VELOCIDAD_SEGUIMIENTO = 145;
 
 int distanciaDer;
 int distanciaIzq;
@@ -31,6 +31,8 @@ int pisoDer;
 int pisoIzq;
 unsigned long tiempo;
 int periodo;
+bool ultraLogicDer = false;
+bool ultraLogicIzq = false;
 
 Motores *motor = new Motores(1, 2, 3, 4); // poner pines de los motores como estan en la libreria
 UltraSonido *ultraSDer = new UltraSonido(P_ULTRA_DER_TRIGGER, P_ULTRA_DER_ECHO);
@@ -46,7 +48,7 @@ Cny70 *cnyIzq = new Cny70(CNYIZQ);
 // bool xxx = cosas 
 // bool yyy = cosas
 // bool xxx 
-if()
+//if()
 
 ////
 
@@ -70,6 +72,9 @@ void sensores()
     distanciaIzq = ultraSIzq->GetDistancia();
     pisoDer = cnyDer->GetValor();
     pisoIzq = cnyIzq->GetValor();
+    ultraLogicIzq = (distanciaDer < DISTANCIA_MAX);
+    ultraLogicDer = (distanciaIzq < DISTANCIA_MAX);
+
 }
 
 //avanzamos solo si no estamos sobre la linea del borde en ese caso doblamos 
@@ -90,11 +95,19 @@ void Adelante(int velocidadAdelante,int velocidadReintegro)
 //poniendo las velocidades  
 void Busquedad()
 {
-    bool objeto = (distanciaDer < DISTANCIA_MAX) || (distanciaIzq < DISTANCIA_MAX);
+   
+    
+    /*bool objeto = (distanciaDer < DISTANCIA_MAX) || (distanciaIzq < DISTANCIA_MAX);
     if (objeto)
-        Adelante(VELOCIDAD_ATAQUE,VELOCIDAD_DE_GIRO);
-    else
-        Reconocer();
+        Adelante(VELOCIDAD_ATAQUE,VELOCIDAD_DE_GIRO);*/
+    bool atacar = (ultraLogicIzq || ultraLogicDer );
+    bool izquierda = (ultraLogicIzq);
+    bool derecha = (ultraLogicDer);
+    
+    if (atacar) Adelante(VELOCIDAD_ATAQUE,VELOCIDAD_DE_GIRO);
+    else if (izquierda) motor->giro_izquierda(VELOCIDAD_SEGUIMIENTO);
+    else if (derecha) motor->giro_derecha(VELOCIDAD_SEGUIMIENTO);
+    else Reconocer();
 }
 
 void setup()
