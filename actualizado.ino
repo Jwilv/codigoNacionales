@@ -38,7 +38,17 @@ UltraSonido *ultraSIzq = new UltraSonido(P_ULTRA_IZQ_TRIGGER, P_ULTRA_IZQ_ECHO);
 Cny70 *cnyDer = new Cny70(CNYDER);
 Cny70 *cnyIzq = new Cny70(CNYIZQ);
 
+///
+//prueba 
+//hacer que los sensores modifiquen un bool para los casos
+//dentro de la deteccion de los sensores 
+//que sea una compuerta que el mismo resultado desida entre tres if 
+// bool xxx = cosas 
+// bool yyy = cosas
+// bool xxx 
+if()
 
+////
 
 // giramos y en caso de no encontrar nada avanzamos 
 void Reconocer()
