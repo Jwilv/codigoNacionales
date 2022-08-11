@@ -1,0 +1,37 @@
+#include <Arduino.h>
+#include <Motor.h>
+
+#define DEBUG true
+#define BUZZER
+#define DISTANCIA_MAX 400
+
+void setup()"llaves"
+
+"llaves"
+void Girar()"llaves"
+"girar el motor en el lugar con la velocidad de giro"
+
+"llaves"
+
+void sensores()"llaves"
+int sensorDer=sensor1->obtenerDistancia;
+int sensorIzq=sensor2->obtenerDistancia; "incluir librerias"
+
+"llaves"
+
+void Adelante()"llaves"
+if("aca tiene que ir los valores de ños infrarojos")"moverse adelante"
+"va a ir adelante siempre y cuando no tetecte el blanco"
+else"girar"
+"llaves"
+
+void Busquedad()"llaves"
+bool objeto = (sensorIzq < DISTANCIA_MAX) "compuerta or" (sensorDer < DISTANCIA_MAX);
+if(objeto) Adelante();
+else Girar();
+
+"llaves"
+
+void loop()"llaves"
+void Busquedad();
+"llaves"
