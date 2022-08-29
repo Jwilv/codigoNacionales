@@ -1,56 +1,27 @@
 #define DEBUG true
 // colocar pines
-#define PINRESET 13
 #define PIN_PULSADOR 1
 #define BUZZER // PONER PIN
-#define PULSADOR A3
 #define P_MOTOR_R_IZQ 9
 #define P_MOTOR_L_IZQ 10
 #define P_MOTOR_R_DER 11
 #define P_MOTOR_L_DER 12
-#define P_ULTRA_DER_TRIGGER 5
-#define P_ULTRA_DER_ECHO 4
-#define P_ULTRA_IZQ_TRIGGER 6
-#define P_ULTRA_IZQ_ECHO 7
-#define DISTANCIA_MAX 30
-int VELOCIDAD_DE_GIRO = 130;
-int VELOCIDAD_RECONOCER = 130;
 #define MINIMO_PISO 200
 #define NEGROMAX 400
-#define CNYDER A5
-#define CNYIZQ A4
-int VELOCIDAD_ATAQUE = 100; // regular
-int VELOCIDAD_SEGUIMIENTO = 145;
-////////////////////////////////////
-bool giroIzquierda;
-bool giroDerecha;
+#define CNYDER 
+#define CNYIZQ 
 ///////////////////////////
 int  velocidadSeguidor = 230;
 
 ///////////////////////////////////////////////////////////////
-String menu = "menu";
-String control = "control remoto";
-String despejar = "despeja objetos";
-String corredor = "seguidor de linea";
 enum STATES
 {
-    INICIO,
-    CONTROL,
-    DESPEJAR,
-    CORREDOR
+    LINEA_RECTA,
+    CURVA_DERECHA,
+    CURVA_IZQUIERDA,
+    FUERA
 };
-int estadoJugada = INICIO;
-
-////////////////////////////////////////////////
-
-int distanciaDer;
-int distanciaIzq;
-unsigned long tiempo;
-int periodo = 2000;
-bool ultraLogicDer = false;
-bool ultraLogicIzq = false;
-int pisoDer;
-int pisoIzq;
+int estadoPiso;
 
 ////////////pwm motor
 int canalDerL = 0;
@@ -185,25 +156,17 @@ MotoresPwm *motor = new MotoresPwm(P_MOTOR_R_IZQ, P_MOTOR_L_IZQ, P_MOTOR_R_DER, 
 Cny70 *cnyDer = new Cny70(CNYDER);
 Cny70 *cnyIzq = new Cny70(CNYIZQ);
 
-
-/////////////////////////////////////funciones quita objetos ////////////////////
 //////////////////////////////////////////////seguidor de linea//////////////
 // llamar  a sensores
 void seguir()
 {
-    pisoDer = cnyDer->GetValor();
-    pisoIzq = cnyIzq->GetValor();
-    bool atras = (NEGROMAX < pisoDer) || (NEGROMAX < pisoIzq);
-    if(NEGROMAX < pisoDer){
-        motor->RotarIzq(velocidadSeguidor);
-    }
-    if(NEGROMAX < pisoIzq){
-        motor->RotarDer(velocidadSeguidor);
-    }
-    if(atras){
-        motor->RetrocerGiroIzq(velocidadSeguidor);
-    }
-    else motor->avanzar(velocidadSeguidor);
+    int pisoDer = cnyDer->GetValor();
+    int pisoIzq = cnyIzq->GetValor();
+    bool fuera  = (NEGROMAX < pisoDer) || (NEGROMAX < pisoIzq);
+    if(NEGROMAX < pisoDer)
+    if(NEGROMAX < pisoIzq)
+    if(fuera)
+    else
 }
 /////////////////////////////////////
 void setup(){
@@ -214,4 +177,30 @@ void setup(){
 void loop()
 {
     seguir();
+
+    switch (estadoPiso)
+    {
+    case LINEA_RECTA:{
+        seguir();
+         motor->avanzar(velocidadSeguidor);
+        break;
+    }
+    case CURVA_DERECHA:{
+        seguir();
+         motor->RotarIzq(velocidadSeguidor);
+        break;
+    }
+    case CURVA_IZQUIERDA:{
+        seguir();
+        motor->RotarDer(velocidadSeguidor);
+        break;
+    }
+    case FUERA:{
+        seguir();
+        motor->RetrocerGiroIzq(velocidadSeguidor);
+        break;
+    }
+    
+   
+    }
 }
