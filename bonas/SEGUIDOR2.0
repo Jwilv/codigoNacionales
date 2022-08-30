@@ -1,0 +1,83 @@
+#define PROMEDIO 2 
+
+#define DIFERENCIAL 30
+
+#define MARGEN 30
+
+int velocidadSeguidor = 200;
+
+int estadoActualDerecho;
+int estadoActualIzquierdo;
+
+int promedioIdeal;
+int promedioActual;
+
+int valorSensorIzquierdo;
+int valorSensorDerecho;
+
+bool sensorNegroIzq = false;
+bool sensorNegroDer = false;
+
+bool doblarIzquierda = false;
+
+bool buscandoPromedio = true;
+
+
+void TomarValores(int sensorIzquierdo,int sensorDerecho){
+    sensorIzquierdo = 
+    sensorDerecho = //recolectamos valores
+}
+
+int PromedioIdeal(){
+    //tomamos valores
+    if(valorSensorIzquierdo > valorSensorDerecho) sensorNegroIzq = true, sensorNegroDer = false;
+    else if(valorSensorDerecho > valorSensorIzquierdo) sensorNegroDer = true, sensorNegroIzq = false;
+    return (valorSensorIzquierdo + valorSensorDerecho) / PROMEDIO;
+}
+
+int PromedioActual(){
+    //recolectar sensores
+    TomarValores(estadoActualIzquierdo,estadoActualDerecho);
+    return (estadoActualIzquierdo + estadoActualDerecho) / PROMEDIO;
+}
+
+void Seguir(){
+    promedioActual = PromedioActual();
+    if(promedioActual > promedioIdeal + MARGEN){
+        if(!sensorNegroDer) //doblar derecha
+        else if(!sensorNegroIzq) //doblar izq
+    } //significa que nos estamos llendo a lo negro
+    else if(promedioActual < promedioIdeal - MARGEN){
+        if(sensorNegroDer) //doblar derecha
+        else if(sensorNegroIzq) // doblar izq
+    } 
+    else //avanzar
+}//significa que nos estamos llendo a lo blanco 
+
+void BuscarPromedio(){
+    if(doblarIzquierda)
+    else //dobalr derecha
+    TomarValores(estadoActualIzquierdo,estadoActualDerecho);
+    bool promediar = (estadoActualIzquierdo - estadoActualDerecho) > DIFERENCIAL;
+    if(promediar){
+        promedioIdeal = PromedioIdeal();
+        buscandoPromedio = false;
+    }
+}
+
+
+
+void seguidor(){
+
+    if(buscandoPromedio)BuscarPromedio();
+    Seguir();
+}
+
+
+
+void setup()
+{
+}
+void loop()
+{
+}
